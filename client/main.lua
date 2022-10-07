@@ -10,23 +10,23 @@ local isLoggedIn = false
 
 -- Events
 
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+RegisterNetEvent('QRCore:Client:OnPlayerUnload')
+AddEventHandler('QRCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QRCore:Client:OnPlayerLoaded')
+AddEventHandler('QRCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
 end)
 
-RegisterNetEvent('hud:client:UpdateNeeds') -- Triggered in qbr-core
+RegisterNetEvent('hud:client:UpdateNeeds') -- Triggered in qr-core
 AddEventHandler('hud:client:UpdateNeeds', function(newHunger, newThirst)
     hunger = newHunger
     thirst = newThirst
 end)
 
-RegisterNetEvent('hud:client:UpdateThirst') -- Triggered in qbr-core
+RegisterNetEvent('hud:client:UpdateThirst') -- Triggered in qr-core
 AddEventHandler('hud:client:UpdateThirst', function(newThirst)
     thirst = newThirst
 end)
@@ -114,7 +114,7 @@ end)
 
 RegisterNetEvent('hud:client:OnMoneyChange')
 AddEventHandler('hud:client:OnMoneyChange', function(type, amount, isMinus)
-    exports['qbr-core']:GetPlayerData(function(PlayerData)
+    exports['qr-core']:GetPlayerData(function(PlayerData)
         cashAmount = PlayerData.money['cash']
         bankAmount = PlayerData.money['bank']
     end)
@@ -132,7 +132,7 @@ end)
 
 Citizen.CreateThread(function() -- Speeding
     while true do
-        if QBCore ~= nil --[[ and isLoggedIn ]] then
+        if QRCore ~= nil --[[ and isLoggedIn ]] then
             local ped = PlayerPedId()
             if IsPedInAnyVehicle(ped, false) then
                 speed = GetEntitySpeed(GetVehiclePedIsIn(ped, false)) * 2.237 --mph
@@ -147,7 +147,7 @@ end)
 
 Citizen.CreateThread(function() -- Shooting
     while true do
-        if QBCore ~= nil --[[ and isLoggedIn ]] then
+        if QRCore ~= nil --[[ and isLoggedIn ]] then
             if IsPedShooting(PlayerPedId()) then
                 if math.random() < Config.StressChance then
                     TriggerServerEvent('hud:server:GainStress', math.random(1, 3))
