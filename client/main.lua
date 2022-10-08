@@ -1,4 +1,4 @@
-
+local QRCore = exports['qr-core']:GetCoreObject()
 local speed = 0.0
 local radarActive = false
 local stress = 0
@@ -114,7 +114,7 @@ end)
 
 RegisterNetEvent('hud:client:OnMoneyChange')
 AddEventHandler('hud:client:OnMoneyChange', function(type, amount, isMinus)
-    exports['qr-core']:GetPlayerData(function(PlayerData)
+    QRCore.Functions.GetPlayerData(function(PlayerData)
         cashAmount = PlayerData.money['cash']
         bankAmount = PlayerData.money['bank']
     end)

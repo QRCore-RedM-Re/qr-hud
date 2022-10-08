@@ -1,14 +1,14 @@
-
+local QRCore = exports['qr-core']:GetCoreObject()
 local ResetStress = false
 
-exports['qr-core']:AddCommand('cash', 'Check Cash Balance', {}, false, function(source, args)
-    local Player = exports['qr-core']:GetPlayer(source)
+QRCore.Commands.Add('cash', 'Check Cash Balance', {}, false, function(source, args)
+    local Player = QRCore.Functions.GetPlayer(source)
     local cashamount = Player.PlayerData.money.cash
 	TriggerClientEvent('hud:client:ShowAccounts', source, 'cash', cashamount)
 end)
 
-exports['qr-core']:AddCommand('bank', 'Check Bank Balance', {}, false, function(source, args)
-    local Player = exports['qr-core']:GetPlayer(source)
+QRCore.Commands.Add('bank', 'Check Bank Balance', {}, false, function(source, args)
+    local Player = QRCore.Functions.GetPlayer(source)
     local bankamount = Player.PlayerData.money.bank
 	TriggerClientEvent('hud:client:ShowAccounts', source, 'bank', bankamount)
 end)
@@ -16,7 +16,7 @@ end)
 RegisterServerEvent('hud:server:GainStress')
 AddEventHandler('hud:server:GainStress', function(amount)
     local src = source
-    local Player = exports['qr-core']:GetPlayer(src)
+    local Player = QRCore.Functions.GetPlayer(src)
     local newStress
     if Player ~= nil and Player.PlayerData.job.name ~= 'police' then
         if not ResetStress then
@@ -40,7 +40,7 @@ end)
 RegisterServerEvent('hud:server:GainThirst')
 AddEventHandler('hud:server:GainThirst', function(amount)
     local src = source
-    local Player = exports['qr-core']:GetPlayer(src)
+    local Player = QRCore.Functions.GetPlayer(src)
     local newThirst
     if Player ~= nil then
             if Player.PlayerData.metadata['thirst'] == nil then
@@ -62,7 +62,7 @@ end)
 RegisterServerEvent('hud:server:RelieveStress')
 AddEventHandler('hud:server:RelieveStress', function(amount)
     local src = source
-    local Player = exports['qr-core']:GetPlayer(src)
+    local Player = QRCore.Functions.GetPlayer(src)
     local newStress
     if Player ~= nil then
         if not ResetStress then
