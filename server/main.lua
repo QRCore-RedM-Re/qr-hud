@@ -33,7 +33,7 @@ AddEventHandler('hud:server:GainStress', function(amount)
         end
         Player.Functions.SetMetaData('stress', newStress)
         TriggerClientEvent('hud:client:UpdateStress', src, newStress)
-        TriggerClientEvent('QRCore:Notify', src, 9, Lang:t("info.getstress"), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+        TriggerClientEvent('QRCore:Notify', src, Lang:t("info.getstress"), 'primary')
 	end
 end)
 
@@ -55,7 +55,7 @@ AddEventHandler('hud:server:GainThirst', function(amount)
             end
         Player.Functions.SetMetaData('thirst', newThirst)
         TriggerClientEvent('hud:client:UpdateThirst', src, newThirst)
-        TriggerClientEvent('QRCore:Notify', src, 9, Lang:t("info.thirsty"), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+        TriggerClientEvent('QRCore:Notify', src, Lang:t("info.thirsty"), 'primary')
 	end
 end)
 
@@ -79,6 +79,6 @@ AddEventHandler('hud:server:RelieveStress', function(amount)
         end
         Player.Functions.SetMetaData('stress', newStress)
         TriggerClientEvent('hud:client:UpdateStress', src, newStress)
-        TriggerClientEvent('QRCore:Notify', src, 9, Lang:t("info.relaxing"), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
+        TriggerClientEvent('QRCore:Notify', src, Lang:t("info.relaxing"), 'primary')
 	end
 end)
