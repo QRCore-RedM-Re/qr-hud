@@ -79,7 +79,7 @@ const moneyHud = Vue.createApp({
                     setTimeout(() => this.showUpdate = false, 1000)
                     setTimeout(() => this.showBloodmoney = false, 2000)
                 } else {
-                    this.showCash = true;
+                    this.showBloodmoney = true;
                     this.plus = true;
                     setTimeout(() => this.showUpdate = false, 1000)
                     setTimeout(() => this.showBloodmoney = false, 2000)
