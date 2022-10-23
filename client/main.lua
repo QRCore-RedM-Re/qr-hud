@@ -109,7 +109,13 @@ AddEventHandler('hud:client:ShowAccounts', function(type, amount)
             type = 'cash',
             cash = amount,
         })
-    else
+    elseif type == 'bloodmoney' then
+        SendNUIMessage({
+            action = 'show',
+            type = 'bloodmoney',
+            bloodmoney = amount,
+        })
+    elseif type == 'bank' then
         SendNUIMessage({
             action = 'show',
             type = 'bank',
@@ -122,11 +128,13 @@ RegisterNetEvent('hud:client:OnMoneyChange')
 AddEventHandler('hud:client:OnMoneyChange', function(type, amount, isMinus)
     QRCore.Functions.GetPlayerData(function(PlayerData)
         cashAmount = PlayerData.money['cash']
+		bloodmoneyAmount = PlayerData.money['bloodmoney']
         bankAmount = PlayerData.money['bank']
     end)
     SendNUIMessage({
         action = 'update',
         cash = cashAmount,
+		bloodmoney = bloodmoneyAmount,
         bank = bankAmount,
         amount = amount,
         minus = isMinus,

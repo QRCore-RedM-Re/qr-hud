@@ -17,6 +17,11 @@
 		    <p v-if="showCash"><span id="sign">$&nbsp;</span><span id="money">{{(cash)}}</span></p>
                 </transition>
             </div>
+            <div id="money-bloodmoney">
+                <transition name="slide-fade">
+		    <p v-if="showBloodmoney"><span id="sign">$&nbsp;</span><span id="bloodmoney">{{(bloodmoney)}}</span></p>
+                </transition>
+            </div>
             <div id="money-bank">
                 <transition name="slide-fade">
 		    <p v-if="showBank"><span id="sign">$&nbsp;</span><span id="bank">{{(bank)}}</span></p>
