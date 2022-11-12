@@ -13,6 +13,12 @@ QRCore.Commands.Add('bank', 'Check Bank Balance', {}, false, function(source, ar
 	TriggerClientEvent('hud:client:ShowAccounts', source, 'bank', bankamount)
 end)
 
+QRCore.Commands.Add('bloodmoney', 'Check Bloodmoney Balance', {}, false, function(source, args)
+    local Player = QRCore.Functions.GetPlayer(source)
+    local bloodmoneyamount = Player.PlayerData.money.bloodmoney
+	TriggerClientEvent('hud:client:ShowAccounts', source, 'bloodmoney', bloodmoneyamount)
+end)
+
 RegisterServerEvent('hud:server:GainStress')
 AddEventHandler('hud:server:GainStress', function(amount)
     local src = source

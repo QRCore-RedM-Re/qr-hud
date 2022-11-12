@@ -4,11 +4,13 @@ const moneyHud = Vue.createApp({
     data() {
         return {
             cash: 0,
+			bloodmoney: 0,
             bank: 0,
             amount: 0,
             plus: false,
             minus: false,
             showCash: false,
+			showBloodmoney: false,
             showBank: false,
             showUpdate: false
         }
@@ -45,14 +47,17 @@ const moneyHud = Vue.createApp({
         },
         showConstant(data) {
             this.showCash = true;
+			this.showBloodmoney = true;
             this.showBank = true;
             this.cash = data.cash;
+			this.bloodmoney = data.bloodmoney;
             this.bank = data.bank;
         },
         update(data) {
             this.showUpdate = true;
             this.amount = data.amount;
             this.bank = data.bank;
+			this.bloodmoney = data.bloodmoney;
             this.cash = data.cash;
             if (data.type === 'cash') {
                 if (data.minus) {
@@ -65,6 +70,19 @@ const moneyHud = Vue.createApp({
                     this.plus = true;
                     setTimeout(() => this.showUpdate = false, 1000)
                     setTimeout(() => this.showCash = false, 2000)
+                }
+            }
+            if (data.type === 'bloodmoney') {
+                if (data.minus) {
+                    this.showBloodmoney = true;
+                    this.minus = true;
+                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showBloodmoney = false, 2000)
+                } else {
+                    this.showBloodmoney = true;
+                    this.plus = true;
+                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showBloodmoney = false, 2000)
                 }
             }
             if (data.type === 'bank') {
@@ -86,7 +104,13 @@ const moneyHud = Vue.createApp({
                 this.showCash = true;
                 this.cash = data.cash;
                 setTimeout(() => this.showCash = false, 3500);
-            } else if (data.type === 'bank' && !this.showBank) {
+            }
+			else if (data.type === 'bloodmoney' && !this.showBloodmoney) {
+                this.showBloodmoney = true;
+                this.bloodmoney = data.bloodmoney;
+                setTimeout(() => this.showBloodmoney = false, 3500);
+            }
+			else if (data.type === 'bank' && !this.showBank) {
                 this.showBank = true;
                 this.bank = data.bank;
                 setTimeout(() => this.showBank = false, 3500);

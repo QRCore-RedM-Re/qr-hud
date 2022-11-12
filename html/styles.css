@@ -61,6 +61,13 @@
     color: #ffffff;
     text-shadow: -1px -1px 0 rgba(0,0,0, 0.7), 1px -1px 0 rgba(0,0,0, 0.7), -1px 1px 0 rgba(0,0,0, 0.7), 1px 1px 0 rgba(0,0,0, 0.7);
   }
+  
+  #bloodmoney {
+    font-family: 'Pricedown Bl', sans-serif;
+    text-align: right;
+    color: #b02525;
+    text-shadow: -1px -1px 0 rgba(0,0,0, 0.7), 1px -1px 0 rgba(0,0,0, 0.7), -1px 1px 0 rgba(0,0,0, 0.7), 1px 1px 0 rgba(0,0,0, 0.7);
+  }
 
 /* Player HUD */
 
