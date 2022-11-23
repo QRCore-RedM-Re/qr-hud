@@ -107,19 +107,19 @@ AddEventHandler('hud:client:ShowAccounts', function(type, amount)
         SendNUIMessage({
             action = 'show',
             type = 'cash',
-            cash = amount,
+            cash = roundMe(amount, 2),
         })
     elseif type == 'bloodmoney' then
         SendNUIMessage({
             action = 'show',
             type = 'bloodmoney',
-            bloodmoney = amount,
+            bloodmoney = roundMe(amount, 2),
         })
     elseif type == 'bank' then
         SendNUIMessage({
             action = 'show',
             type = 'bank',
-            bank = amount,
+            bank = roundMe(amount, 2),
         })
     end
 end)
@@ -128,15 +128,15 @@ RegisterNetEvent('hud:client:OnMoneyChange')
 AddEventHandler('hud:client:OnMoneyChange', function(type, amount, isMinus)
     QRCore.Functions.GetPlayerData(function(PlayerData)
         cashAmount = PlayerData.money['cash']
-		bloodmoneyAmount = PlayerData.money['bloodmoney']
+        bloodmoneyAmount = PlayerData.money['bloodmoney']
         bankAmount = PlayerData.money['bank']
     end)
     SendNUIMessage({
         action = 'update',
-        cash = cashAmount,
-		bloodmoney = bloodmoneyAmount,
-        bank = bankAmount,
-        amount = amount,
+        cash = roundMe(cashAmount, 2),
+        bloodmoney = roundMe(bloodmoneyAmount, 2),
+        bank = roundMe(bankAmount, 2),
+        amount = roundMe(amount, 2),
         minus = isMinus,
         type = type,
     })
@@ -228,4 +228,9 @@ function GetEffectInterval(stresslevel)
         end
     end
     return retval
+end
+
+function roundMe(n, dec)
+    local power = 10^dec
+    return math.floor(n * power) / power
 end
