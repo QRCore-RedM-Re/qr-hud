@@ -19,8 +19,7 @@ QRCore.Commands.Add('bloodmoney', 'Check Bloodmoney Balance', {}, false, functio
 	TriggerClientEvent('hud:client:ShowAccounts', source, 'bloodmoney', bloodmoneyamount)
 end)
 
-RegisterServerEvent('hud:server:GainStress')
-AddEventHandler('hud:server:GainStress', function(amount)
+RegisterNetEvent('hud:server:GainStress', function(amount)
     local src = source
     local Player = QRCore.Functions.GetPlayer(src)
     local newStress
@@ -43,8 +42,7 @@ AddEventHandler('hud:server:GainStress', function(amount)
 	end
 end)
 
-RegisterServerEvent('hud:server:GainThirst')
-AddEventHandler('hud:server:GainThirst', function(amount)
+RegisterNetEvent('hud:server:GainThirst', function(amount)
     local src = source
     local Player = QRCore.Functions.GetPlayer(src)
     local newThirst
@@ -65,8 +63,7 @@ AddEventHandler('hud:server:GainThirst', function(amount)
 	end
 end)
 
-RegisterServerEvent('hud:server:RelieveStress')
-AddEventHandler('hud:server:RelieveStress', function(amount)
+RegisterNetEvent('hud:server:RelieveStress', function(amount)
     local src = source
     local Player = QRCore.Functions.GetPlayer(src)
     local newStress
