@@ -124,19 +124,19 @@ RegisterNetEvent('hud:client:ShowAccounts', function(type, amount)
         SendNUIMessage({
             action = 'show',
             type = 'cash',
-            cash = QCore.Shared.Round(amount, 2),
+            cash = QRCore.Shared.Round(amount, 2),
         })
     elseif type == 'bloodmoney' then
         SendNUIMessage({
             action = 'show',
             type = 'bloodmoney',
-            bloodmoney = QCore.Shared.Round(amount, 2),
+            bloodmoney = QRCore.Shared.Round(amount, 2),
         })
     elseif type == 'bank' then
         SendNUIMessage({
             action = 'show',
             type = 'bank',
-            bank = QCore.Shared.Round(amount, 2),
+            bank = QRCore.Shared.Round(amount, 2),
         })
     end
 end)
@@ -149,10 +149,10 @@ RegisterNetEvent('hud:client:OnMoneyChange', function(type, amount, isMinus)
     end)
     SendNUIMessage({
         action = 'update',
-        cash = QCore.Shared.Round(cashAmount, 2),
-        bloodmoney = QCore.Shared.Round(bloodmoneyAmount, 2),
-        bank = QCore.Shared.Round(bankAmount, 2),
-        amount = QCore.Shared.Round(amount, 2),
+        cash = QRCore.Shared.Round(cashAmount, 2),
+        bloodmoney = QRCore.Shared.Round(bloodmoneyAmount, 2),
+        bank = QRCore.Shared.Round(bankAmount, 2),
+        amount = QRCore.Shared.Round(amount, 2),
         minus = isMinus,
         type = type,
     })
