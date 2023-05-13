@@ -1,24 +1,16 @@
 local QRCore = exports['qr-core']:GetCoreObject()
 local ResetStress = false
 
-QRCore.Commands.Add('cash', 'Check Cash Balance', {}, false, function(source, args)
-    local Player = QRCore.Functions.GetPlayer(source)
-    local cashamount = Player.PlayerData.money.cash
-	TriggerClientEvent('hud:client:ShowAccounts', source, 'cash', cashamount)
-end)
+-- Money Commands --
+for TYPE, _ in pairs(QRCore.Config.Money.MoneyTypes) do
+    QRCore.Commands.Add(TYPE, 'Check '..TYPE..' balance', {}, false, function(source, args)
+        local Player = QRCore.Functions.GetPlayer(source)
+        local amount = Player.PlayerData.money[TYPE]
+        TriggerClientEvent('hud:client:ShowAccounts', source, TYPE, amount)
+    end)
+end
 
-QRCore.Commands.Add('bank', 'Check Bank Balance', {}, false, function(source, args)
-    local Player = QRCore.Functions.GetPlayer(source)
-    local bankamount = Player.PlayerData.money.bank
-	TriggerClientEvent('hud:client:ShowAccounts', source, 'bank', bankamount)
-end)
-
-QRCore.Commands.Add('bloodmoney', 'Check Bloodmoney Balance', {}, false, function(source, args)
-    local Player = QRCore.Functions.GetPlayer(source)
-    local bloodmoneyamount = Player.PlayerData.money.bloodmoney
-	TriggerClientEvent('hud:client:ShowAccounts', source, 'bloodmoney', bloodmoneyamount)
-end)
-
+-- Gain Stress --
 RegisterNetEvent('hud:server:GainStress', function(amount)
     local src = source
     local Player = QRCore.Functions.GetPlayer(src)
@@ -42,6 +34,7 @@ RegisterNetEvent('hud:server:GainStress', function(amount)
 	end
 end)
 
+-- Gain Thirst --
 RegisterNetEvent('hud:server:GainThirst', function(amount)
     local src = source
     local Player = QRCore.Functions.GetPlayer(src)
@@ -63,6 +56,7 @@ RegisterNetEvent('hud:server:GainThirst', function(amount)
 	end
 end)
 
+-- Relieve Stress --
 RegisterNetEvent('hud:server:RelieveStress', function(amount)
     local src = source
     local Player = QRCore.Functions.GetPlayer(src)
