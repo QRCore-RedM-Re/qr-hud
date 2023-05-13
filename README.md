@@ -1,6 +1,8 @@
 # qr-hud
 - Player HUD for QR-Core
 
+![image](https://github.com/xThrasherrr/xt-test/assets/101474430/b1897081-a248-4d27-88ff-de126abc5a2a)
+
 ## Dependencies
 - [qr-core](https://github.com/QRCore-RedM-Re/qr-core)
 - [ox_lib](https://github.com/overextended/ox_lib)
