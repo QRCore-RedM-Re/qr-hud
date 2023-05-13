@@ -1,15 +1,16 @@
 Config = {}
 Config.StressChance = 0.1 -- Default: 10% -- Percentage Stress Chance When Shooting (0-1)
 Config.MinimumStress = 50 -- Minimum Stress Level For Screen Shaking
-Config.MinimumSpeed = 100 -- Going Over This Speed Will Cause Stress
+Config.MinimumSpeed = 20 -- Going Over This Speed Will Cause Stress
+Config.SpeedCheck = 10 -- Check Player Speed Every 10 Seconds
 
---Current setup: no minimap when onfoot
-Config.OnFootMinimap = false -- set to true/false to disable/enable minimap when on foot
-Config.OnFootCompass = false -- true = have the minimap set to a compass instead of off or normal minimap
+-- On Foot Minimap & Comapss --
+Config.OnFootMinimap = true -- Enable/Disable Minimap on Foot (If Disabled, Compass can be Enabled)
+Config.OnFootCompass = false -- Only used if Config.OnFootMinimap = false
 
---Current setup: Normal minimap when on mount
-Config.MounttMinimap = true -- set to false if you want to disable the minimap when on mount
-Config.MountCompass = false -- set to true if you want to have a compass instead of normal minimap while on a mount
+-- On Mount / Vehicle Minimap & Comapss --
+Config.MounttMinimap = true -- Enable/Disable Minimap on Mount / Vehicles (If Disabled, Compass can be Enabled)
+Config.MountCompass = false -- Only used if Config.MounttMinimap = false
 
 -- Stress
 Config.Intensity = {
