@@ -32,11 +32,11 @@ local function GetEffectInterval(stresslevel)
 end
 
 -- Events --
-RegisterNetEvent('QRCore:Client:OnPlayerUnload', function()
+RegisterNetEvent('QRCore:Client:OnPlayerLoaded', function()
     PlayerData = QRCore.Functions.GetPlayerData()
 end)
 
-RegisterNetEvent('QRCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QRCore:Client:OnPlayerUnload', function()
     PlayerData = {}
 end)
 
