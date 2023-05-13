@@ -63,12 +63,12 @@ const moneyHud = Vue.createApp({
                 if (data.minus) {
                     this.showCash = true;
                     this.minus = true;
-                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showUpdate = false, 2000)
                     setTimeout(() => this.showCash = false, 2000)
                 } else {
                     this.showCash = true;
                     this.plus = true;
-                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showUpdate = false, 2000)
                     setTimeout(() => this.showCash = false, 2000)
                 }
             }
@@ -76,12 +76,12 @@ const moneyHud = Vue.createApp({
                 if (data.minus) {
                     this.showBloodmoney = true;
                     this.minus = true;
-                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showUpdate = false, 2000)
                     setTimeout(() => this.showBloodmoney = false, 2000)
                 } else {
                     this.showBloodmoney = true;
                     this.plus = true;
-                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showUpdate = false, 2000)
                     setTimeout(() => this.showBloodmoney = false, 2000)
                 }
             }
@@ -89,12 +89,12 @@ const moneyHud = Vue.createApp({
                 if (data.minus) {
                     this.showBank = true;
                     this.minus = true;
-                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showUpdate = false, 2000)
                     setTimeout(() => this.showBank = false, 2000)
                 } else {
                     this.showBank = true;
                     this.plus = true;
-                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showUpdate = false, 2000)
                     setTimeout(() => this.showBank = false, 2000)
                 }
             }
