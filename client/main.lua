@@ -1,14 +1,14 @@
 local QRCore = exports['qr-core']:GetCoreObject()
+local PlayerData = QRCore.Functions.GetPlayerData()
 local speed = 0.0
-local radarActive = false
 local stress = 0
 local hunger = 100
 local thirst = 100
 local cashAmount = 0
 local bankAmount = 0
-local isLoggedIn = false
+local bloodmoneyAmount = 0
 
--- functions
+-- Functions --
 local function GetShakeIntensity(stresslevel)
     local retval = 0.05
     for _, v in pairs(Config.Intensity['shake']) do
@@ -31,14 +31,13 @@ local function GetEffectInterval(stresslevel)
     return retval
 end
 
--- Events
-
+-- Events --
 RegisterNetEvent('QRCore:Client:OnPlayerUnload', function()
-    isLoggedIn = false
+    PlayerData = QRCore.Functions.GetPlayerData()
 end)
 
 RegisterNetEvent('QRCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
+    PlayerData = {}
 end)
 
 RegisterNetEvent('hud:client:UpdateNeeds', function(newHunger, newThirst)
@@ -54,71 +53,7 @@ RegisterNetEvent('hud:client:UpdateStress', function(newStress)
     stress = newStress
 end)
 
--- Player HUD
-CreateThread(function()
-    while true do
-        Wait(500)
-        if LocalPlayer.state['isLoggedIn'] then
-            local show = true
-            local player = PlayerPedId()
-            local playerid = PlayerId()
-            if IsPauseMenuActive() then
-                show = false
-            end
-            local voice = 0
-            local talking = Citizen.InvokeNative(0x33EEF97F, playerid)
-            if LocalPlayer.state['proximity'] then
-                voice = LocalPlayer.state['proximity'].distance
-            end
-            SendNUIMessage({
-                action = 'hudtick',
-                show = show,
-                health = GetEntityHealth(player) / 3, -- health in red dead is 300 so dividing by 3 makes it 100 here
-                armor = Citizen.InvokeNative(0x2CE311A7, player),
-                thirst = thirst,
-                hunger = hunger,
-                stress = stress,
-				talking = talking,
-				voice = voice,
-            })
-        else
-            SendNUIMessage({
-                action = 'hudtick',
-                show = false,
-            })
-        end
-    end
-end)
-
-CreateThread(function()
-    while true do
-        Wait(1)
-          if IsPedOnMount(PlayerPedId()) or IsPedOnVehicle(PlayerPedId()) then
-            if Config.MounttMinimap then
-                if Config.MountCompass then
-                    SetMinimapType(3)
-                else
-                    SetMinimapType(1)
-                end
-            else
-                SetMinimapType(0)
-            end
-          else
-            if not Config.OnFootMinimap then
-              SetMinimapType(0)
-              Wait(2000)
-            else
-                if Config.OnFootCompass then
-                    SetMinimapType(3)
-                else
-                    SetMinimapType(1)
-                end
-            end
-          end
-     end
-  end)
--- Money HUD
-
+-- Money HUD --
 RegisterNetEvent('hud:client:ShowAccounts', function(type, amount)
     if type == 'cash' then
         SendNUIMessage({
@@ -158,41 +93,109 @@ RegisterNetEvent('hud:client:OnMoneyChange', function(type, amount, isMinus)
     })
 end)
 
--- Stress Gain
-
-CreateThread(function() -- Speeding
+-- Player HUD --
+CreateThread(function()
     while true do
-        if QRCore ~= nil --[[ and isLoggedIn ]] then
-            local ped = PlayerPedId()
-            if IsPedInAnyVehicle(ped, false) then
-                speed = GetEntitySpeed(GetVehiclePedIsIn(ped, false)) * 2.237 --mph
+        Wait(500)
+        if LocalPlayer.state.isLoggedIn then
+            local show = true
+            if IsPauseMenuActive() then show = false end
+            local voice = 0
+            local talking = Citizen.InvokeNative(0x33EEF97F, cache.playerId) -- MumbleIsPlayerTalking
+            if LocalPlayer.state['proximity'] then
+                voice = LocalPlayer.state['proximity'].distance
+            end
+            SendNUIMessage({
+                action = 'hudtick',
+                show = show,
+                health = GetEntityHealth(player) / 3, -- RDR2 Health = 300 (Divide by 100 Here)
+                armor = Citizen.InvokeNative(0x2CE311A7, cache.ped),
+                thirst = thirst,
+                hunger = hunger,
+                stress = stress,
+				talking = talking,
+				voice = voice,
+            })
+        else
+            SendNUIMessage({
+                action = 'hudtick',
+                show = false,
+            })
+        end
+    end
+end)
+
+-- Radar & Map --
+CreateThread(function()
+    while true do
+        Wait(1000)
+        if LocalPlayer.state.isLoggedIn then
+            if cache.mount or cache.vehicle then
+                if Config.MounttMinimap then
+                    SetMinimapType(1)
+                else
+                    if Config.MountCompass then
+                        SetMinimapType(3)
+                    else
+                        SetMinimapType(0)
+                    end
+                end
+            else
+                if Config.OnFootMinimap then
+                    SetMinimapType(1)
+                else
+                    if Config.OnFootCompass then
+                        SetMinimapType(3)
+                    else
+                        SetMinimapType(0)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+-- Speeding Stress --
+CreateThread(function()
+    while true do
+        if LocalPlayer.state.isLoggedIn then
+            if cache.mount or cache.vehicle then
+                local veh = cache.vehicle or cache.mount
+                speed = GetEntitySpeed(veh) * 2.237 -- MPH
                 if speed >= Config.MinimumSpeed then
                     TriggerServerEvent('hud:server:GainStress', math.random(1, 3))
                 end
             end
         end
-        Wait(20000)
+        Wait(Config.SpeedCheck * 1000)
     end
 end)
 
+-- Shooting Stress --
+local Shooting = 500
 CreateThread(function() -- Shooting
     while true do
-        if QRCore ~= nil --[[ and isLoggedIn ]] then
-            if IsPedShooting(PlayerPedId()) then
-                if math.random() < Config.StressChance then
-                    TriggerServerEvent('hud:server:GainStress', math.random(1, 3))
+        local isArmed = Citizen.InvokeNative(0xCB690F680A3EA971, cache.ped, 7) -- IsPedArmed
+        if LocalPlayer.state.isLoggedIn and isArmed then
+            local weapon = Citizen.InvokeNative(0x8425C5F057012DAB, cache.ped) -- GetPedCurrentHeldWeapon
+            if weapon ~= -1569615261 then
+                if IsPedShooting(cache.ped) then
+                    if math.random() < Config.StressChance then
+                        TriggerServerEvent('hud:server:GainStress', math.random(1, 3))
+                    end
                 end
+                Shooting = 0
+            else
+                Shooting = 1000
             end
         end
-        Wait(6)
+        Wait(Shooting)
     end
 end)
 
--- Stress Screen Effects
-
+-- Stress Screen Effects --
 CreateThread(function()
     while true do
-        local ped = PlayerPedId()
         local sleep = GetEffectInterval(stress)
         if stress >= 100 then
             local ShakeIntensity = GetShakeIntensity(stress)
@@ -201,9 +204,8 @@ CreateThread(function()
             ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', ShakeIntensity)
             SetFlash(0, 0, 500, 3000, 500)
 
-            if not IsPedRagdoll(ped) and IsPedOnFoot(ped) and not IsPedSwimming(ped) then
-                local player = PlayerPedId()
-                SetPedToRagdollWithFall(player, RagdollTimeout, RagdollTimeout, 1, GetEntityForwardVector(player), 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            if not IsPedRagdoll(cache.ped) and IsPedOnFoot(cache.ped) and not IsPedSwimming(cache.ped) then
+                SetPedToRagdollWithFall(player, RagdollTimeout, RagdollTimeout, 1, GetEntityForwardVector(cache.ped), 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
             end
 
             Wait(500)
