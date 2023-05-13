@@ -1,9 +1,10 @@
 local QRCore = exports['qr-core']:GetCoreObject()
 local PlayerData = QRCore.Functions.GetPlayerData()
 local speed = 0.0
-local stress = 0
+local armor = 0
 local hunger = 100
 local thirst = 100
+local stress = 0
 local cashAmount = 0
 local bankAmount = 0
 local bloodmoneyAmount = 0
@@ -34,6 +35,10 @@ end
 -- Events --
 RegisterNetEvent('QRCore:Client:OnPlayerLoaded', function()
     PlayerData = QRCore.Functions.GetPlayerData()
+    armor = PlayerData.metadata.armor
+    hunger = PlayerData.metadata.hunger
+    thirst = PlayerData.metadata.thirst
+    stress = PlayerData.metadata.stress
 end)
 
 RegisterNetEvent('QRCore:Client:OnPlayerUnload', function()
@@ -108,8 +113,8 @@ CreateThread(function()
             SendNUIMessage({
                 action = 'hudtick',
                 show = show,
-                health = GetEntityHealth(player) / 3, -- RDR2 Health = 300 (Divide by 100 Here)
-                armor = Citizen.InvokeNative(0x2CE311A7, cache.ped),
+                health = GetEntityHealth(cache.ped) / 3, -- RDR2 Health = 300 (Divide by 100 Here)
+                armor = armor,
                 thirst = thirst,
                 hunger = hunger,
                 stress = stress,
